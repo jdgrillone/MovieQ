@@ -40,12 +40,14 @@ $(document).ready(function(){
           
             // Putting the entire movie above the previous movies
             $(".results").append(movieDiv);
+            $(".carousel").html("");
+            $(".carousel").attr("class", "carousel");
           }
         });
       });
 
       // displayMovieInfo function re-renders the HTML to display the appropriate content
-      function displayMovieInfo() {
+      function displayRecommendations() {
 
         var movieID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "/recommendations?api_key=cb3ac66f262794533540ec467d2c75f1&language=en-US&page=1";
@@ -101,12 +103,13 @@ $(document).ready(function(){
             $(".carousel").append(movieDiv);
 
           }
-          
-      $('.carousel').carousel();
+
+      	$(".carousel").carousel();
+      	$(".results").html("");
         });
 
       }
 
       // Adding a click event listener to all elements with a class of "movie"
-      $(document).on("click", ".movie", displayMovieInfo);
+      $(document).on("click", ".movie", displayRecommendations);
     });
