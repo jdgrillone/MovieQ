@@ -2,9 +2,34 @@
 <html>
 <head>
 	<title>MovieQ</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 </head>
 <body>
-	<h1>MovieQ!</h1>
+	<!-- nav bar-->
+	<nav>
+		<div class="nav-wrapper">
+			<h2 class="brand-logo center">MovieQ</h2> 
+		</div>
+	</nav>
 
+	<div class="container">
+		<div class="row">
+
+			<div class="col s9"> 
+				<div id="">Recommendations</div>
+			</div>
+			<div class="col s3">
+				<div id="">User Input
+				<input id="movie-input" type="text" class="search">
+          		<button id="movie-search" class="btn waves-effect waves-light" type="search" name="action">Search</button>
+          	</div>
+		</div>
+	</div>
+				
+<!-- jQuery CDN -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script type="text/javascript" src="assets/js/app.js"></script>
 </body>
 </html>
