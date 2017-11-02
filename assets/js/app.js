@@ -61,7 +61,7 @@ $(document).ready(function(){
 
           for (var i = 0; i < 10; i++) {
             // Creating a div to hold the movie
-            var movieDiv = $("<a class='carousel-item recommend'>");
+            var movieDiv = $("<div class='carousel-item recommend'>");
 
             // // Storing the rating data
             // var rating = response.Rated;
@@ -112,4 +112,7 @@ $(document).ready(function(){
 
       // Adding a click event listener to all elements with a class of "movie"
       $(document).on("click", ".movie", displayRecommendations);
+
+      // Adding a click event listener to all elements with a class of "movie"
+      $(document).on("click", ".genre", displayRecommendations);
     });
