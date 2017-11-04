@@ -68,8 +68,8 @@ $(document).ready(function(){
       	}
     });
 
-      // displayRecommendations function re-renders the HTML to display the appropriate content
-      function displayRecommendations() {
+    // displayRecommendations function re-renders the HTML to display the appropriate content
+    function displayRecommendations() {
 
         var movieID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "/recommendations?api_key=cb3ac66f262794533540ec467d2c75f1&language=en-US&page=1";
@@ -139,11 +139,85 @@ $(document).ready(function(){
         }
         });
 
-      }
+    }
 
-      // displayRecommendationInfo function re-renders the HTML to display the appropriate content
-      function displayRecommendationInfo() {
+    // displayRecommendations function re-renders the HTML to display the appropriate content
+    function displayGenreRecommendations() {
 
+        var genreID = $(this).attr("value");
+        var queryURL = "https://api.themoviedb.org/3/discover/movie?with_genres=" + genreID + "&page=1&include_video=false&include_adult=false&sort_by=popularity.desc&language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
+
+            $(".carousel").html("");
+            $(".carousel").carousel("destroy");
+        // Creating an AJAX call for the specific movie button being clicked
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).done(function(response) {
+          console.log(response);
+
+          if (response.results.length < 1) {
+            nodisplay();
+          } else {
+
+          $("#message").text("");
+
+          for (var i = 0; i < 10; i++) {
+            // Creating a div to hold the movie
+            var movieDiv = $("<div class='carousel-item recommend'>");
+            movieDiv.attr("value", response.results[i].id);
+
+            // // Storing the rating data
+            // var rating = response.Rated;
+
+            // // Creating an element to have the rating displayed
+            // var pOne = $("<p>").text("Rating: " + rating);
+
+            // // Displaying the rating
+            // movieDiv.append(pOne);
+
+            // // Storing the release year
+            // var released = response.results[0].release_date;
+
+            // // Creating an element to hold the release year
+            // var pTwo = $("<p>").text("Released: " + released);
+
+            // // Displaying the release year
+            // movieDiv.append(pTwo);
+
+            // // Storing the plot
+            // var plot = response.results[0].overview;
+
+            // // Creating an element to hold the plot
+            // var pThree = $("<p>").text("Plot: " + plot);
+
+            // // Appending the plot
+            // movieDiv.append(pThree);
+
+            // Retrieving the URL for the image
+            var imgURL = "https://image.tmdb.org/t/p/w185" + response.results[i].poster_path;
+
+            // Creating an element to hold the image
+            var image = $("<img>").attr("src", imgURL);
+
+            // Appending the image
+            movieDiv.append(image);
+
+            // Putting the entire movie above the previous movies
+            $(".carousel").append(movieDiv);
+
+          }
+
+          $(".carousel").carousel();
+        }
+        });
+
+    }
+
+    // displayRecommendationInfo function re-renders the HTML to display the appropriate content
+    function displayRecommendationInfo(event) {
+    	event.preventDefault();
+      	$("#recommendation-info").html("");
         var movieID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
 
@@ -196,24 +270,24 @@ $(document).ready(function(){
             
 
             // Putting the entire movie above the previous movies
-            $(".s9").append(movieDiv);
+            $("#recommendation-info").append(movieDiv);
         
         });
 
-      }
+    }
 
-      // Adding a click event listener to all elements with a class of "movie"
-      $(document).on("click", ".movie", displayRecommendations);
+    // Adding a click event listener to all elements with a class of "movie"
+    $(document).on("click", ".movie", displayRecommendations);
 
-      // Adding a click event listener to all elements with a class of "genre"
-      $(document).on("click", ".genre", displayRecommendations);
+    // Adding a click event listener to all elements with a class of "genre"
+    $(document).on("click", ".genre", displayGenreRecommendations);
 
-      // Adding a click event listener to all elements with a class of "recommend"
-      $(document).on("click", ".recommend", displayRecommendationInfo);
+    // Adding a click event listener to all elements with a class of "recommend"
+    $(document).on("click", ".recommend", displayRecommendationInfo);
 
 
 
-    });
+});
 
 function nodisplay() {
   $("#message").text("Sorry, there are no results for that")
