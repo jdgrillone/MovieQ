@@ -19,25 +19,25 @@ $(document).ready(function(){
             // Creating a div to hold the movie
             var movieDiv = $("<div class='movie'>");
             movieDiv.attr("value", response.results[i].id);
-          
+
             // Storing the rating data
             var title = response.results[i].title;
-          
+
             // // Creating an element to have the rating displayed
             // var pOne = $("<p>").text("Title: " + title);
-          
+
             // // Displaying the rating
                     // movieDiv.append(pOne);
-          
+
             // Storing the release year
             var released = response.results[i].release_date.substring(0, 4);
-          
+
             // Creating an element to hold the release year
             var pTwo = $("<p>").text('"' + title + '" -- ' + released);
-          
+
             // Displaying the release year
             movieDiv.append(pTwo);
-          
+
             // Putting the entire movie above the previous movies
             $(".results").append(movieDiv);
             $(".carousel").html("");
@@ -58,6 +58,12 @@ $(document).ready(function(){
           method: "GET"
         }).done(function(response) {
           console.log(response);
+
+          if (response.results.length < 1) {
+            nodisplay();
+          } else {
+
+          $("#message").text("");
 
           for (var i = 0; i < 10; i++) {
             // Creating a div to hold the movie
@@ -104,8 +110,9 @@ $(document).ready(function(){
 
           }
 
-      	$(".carousel").carousel();
-      	$(".results").html("");
+          $(".carousel").carousel();
+          $(".results").html("");
+        }
         });
 
       }
@@ -115,4 +122,11 @@ $(document).ready(function(){
 
       // Adding a click event listener to all elements with a class of "movie"
       $(document).on("click", ".genre", displayRecommendations);
+
+
+
     });
+
+function nodisplay() {
+  $("#message").text("Sorry, there are no results for that")
+};
