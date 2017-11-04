@@ -1,14 +1,16 @@
 $(document).ready(function(){
+	function movieSearch() {
 
-      // This function handles events where a movie button is clicked
+	};
+      // This function handles events where the search button is clicked
       $("#movie-search").on("click", function(event) {
         event.preventDefault();
         // This line grabs the input from the textbox
         var movie = $("#movie-input").val().trim();
 
         var queryURL = "https://api.themoviedb.org/3/search/movie?api_key=cb3ac66f262794533540ec467d2c75f1&query=" + movie;
-
-        // Creating an AJAX call for the specific movie button being clicked
+        $(".results").html("");
+        // Creating an AJAX call for the specific movie being searched
         $.ajax({
           url: queryURL,
           method: "GET"
@@ -20,7 +22,7 @@ $(document).ready(function(){
             var movieDiv = $("<div class='movie'>");
             movieDiv.attr("value", response.results[i].id);
           
-            // Storing the rating data
+            // Storing the title data
             var title = response.results[i].title;
           
             // // Creating an element to have the rating displayed
@@ -38,7 +40,7 @@ $(document).ready(function(){
             // Displaying the release year
             movieDiv.append(pTwo);
           
-            // Putting the entire movie above the previous movies
+            // Putting the entire movie in the search results
             $(".results").append(movieDiv);
             $(".carousel").html("");
             $(".carousel").attr("class", "carousel");
