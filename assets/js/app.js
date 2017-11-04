@@ -1,14 +1,16 @@
 $(document).ready(function(){
+	function movieSearch() {
 
-      // This function handles events where a movie button is clicked
+	};
+      // This function handles events where the search button is clicked
       $("#movie-search").on("click", function(event) {
         event.preventDefault();
         // This line grabs the input from the textbox
         var movie = $("#movie-input").val().trim();
 
         var queryURL = "https://api.themoviedb.org/3/search/movie?api_key=cb3ac66f262794533540ec467d2c75f1&query=" + movie;
-
-        // Creating an AJAX call for the specific movie button being clicked
+        $(".results").html("");
+        // Creating an AJAX call for the specific movie being searched
         $.ajax({
           url: queryURL,
           method: "GET"
@@ -20,32 +22,34 @@ $(document).ready(function(){
             var movieDiv = $("<div class='movie'>");
             movieDiv.attr("value", response.results[i].id);
           
-            // Storing the rating data
+            // Storing the title data
             var title = response.results[i].title;
-          
+
             // // Creating an element to have the rating displayed
             // var pOne = $("<p>").text("Title: " + title);
-          
+
             // // Displaying the rating
                     // movieDiv.append(pOne);
-          
+
             // Storing the release year
             var released = response.results[i].release_date.substring(0, 4);
-          
+
             // Creating an element to hold the release year
             var pTwo = $("<p>").text('"' + title + '" -- ' + released);
-          
+
             // Displaying the release year
             movieDiv.append(pTwo);
           
-            // Putting the entire movie above the previous movies
+            // Putting the entire movie in the search results
             $(".results").append(movieDiv);
+            $(".carousel").html("");
+            $(".carousel").attr("class", "carousel");
           }
         });
       });
 
       // displayMovieInfo function re-renders the HTML to display the appropriate content
-      function displayMovieInfo() {
+      function displayRecommendations() {
 
         var movieID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "/recommendations?api_key=cb3ac66f262794533540ec467d2c75f1&language=en-US&page=1";
@@ -57,9 +61,15 @@ $(document).ready(function(){
         }).done(function(response) {
           console.log(response);
 
+          if (response.results.length < 1) {
+            nodisplay();
+          } else {
+
+          $("#message").text("");
+
           for (var i = 0; i < 10; i++) {
             // Creating a div to hold the movie
-            var movieDiv = $("<a class='carousel-item recommend'>");
+            var movieDiv = $("<div class='carousel-item recommend'>");
 
             // // Storing the rating data
             // var rating = response.Rated;
@@ -101,12 +111,24 @@ $(document).ready(function(){
             $(".carousel").append(movieDiv);
 
           }
-          
-      $('.carousel').carousel();
+
+          $(".carousel").carousel();
+          $(".results").html("");
+        }
         });
 
       }
 
       // Adding a click event listener to all elements with a class of "movie"
-      $(document).on("click", ".movie", displayMovieInfo);
+      $(document).on("click", ".movie", displayRecommendations);
+
+      // Adding a click event listener to all elements with a class of "movie"
+      $(document).on("click", ".genre", displayRecommendations);
+
+
+
     });
+
+function nodisplay() {
+  $("#message").text("Sorry, there are no results for that")
+};
