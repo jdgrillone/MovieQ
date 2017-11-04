@@ -3,12 +3,13 @@
 <head>
 	<title>MovieQ</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
 	<!-- nav bar-->
 	<nav>
 		<div class="nav-wrapper">
-			<h2 class="brand-logo center">MovieQ</h2> 
+			<h1 class="brand-logo center">MovieQ</h1> 
 		</div>
 	</nav>
 
@@ -16,46 +17,72 @@
 		<div class="row">
 
 			<div class="col s9"> 
-				<div id="">Recommendations</div>
+				<div id=""><h4>Recommendations</h4></div>
 				<div id="message"></div>
 				<div class="carousel">
-    
-  				</div>
+
+				</div>
 			</div>
 			<div class="col s3">
-				<div id="">User Input
-				<input id="movie-input" type="text" class="search">
-          		<button id="movie-search" class="btn floating blue" type="search" name="action">Search</button>
-          	</div>
-          		<div class="results"></div>
+				<div id=""><h4>User Input</h4>
+					<input id="movie-input" type="text" class="search">
+					<button id="movie-search" class="btn floating blue" type="search" name="action">Search</button>
+				</div>
+				<div class="results"></div>
+
+
+				<div id="next-previous-buttons">
+
+					<button class="btn-floating blue prev" type="search" name="action"><</button>
+					<button class="btn-floating blue next" type="search" name="action">></button>
+
+				</div>
+				<div id="genre-heading"><h4>Genres</h4></div>
+					<ul>
+						<li class="genre" value="28">Action<li>
+						<li class="genre" value="12">Adventure<li>
+						<li class="genre" value="16">Animation<li>
+						<li class="genre" value="35">Comedy<li>
+						<li class="genre" value="80">Crime<li>
+						<li class="genre" value="99">Documentary<li>
+						<li class="genre" value="18">Drama<li>
+						<li class="genre" value="10751">Family<li>
+						<li class="genre" value="14">Fantasy<li>
+						<li class="genre" value="36">History<li>
+						<li class="genre" value="27">Horror<li>
+						<li class="genre" value="10402">Music<li>
+						<li class="genre" value="9648">Mystery<li>
+						<li class="genre" value="10749">Romance<li>
+						<li class="genre" value="878">Science Fiction<li>
+						<li class="genre" value="10770">TV Movie<li>
+						<li class="genre" value="53">Thriller<li>
+						<li class="genre" value="10752">War<li>
+						<li class="genre" value="37">Western<li>
+					</ul>
 			</div>
-
-			<div class="fixed-action-btn horizontal">
-    		
-     			<button class="btn-floating blue" type="search" name="action"><</button>
-      			<button class="btn-floating blue" type="search" name="action">></button>
-    		
-  			</div>
-
-
-
 		</div>
+
+		<div class="row">
+			<div class="col s9">
+				<div id="recently-viewed"><h4>Recently Viewed<h4></div>
+
+			</div>
 	</div>
-		
 
+
+
+	
 
 	
 
 	
-		
-	
 
 
-				
-<!-- jQuery CDN -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!-- Compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-<script type="text/javascript" src="assets/js/app.js"></script>
+
+	<!-- jQuery CDN -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+	<script type="text/javascript" src="assets/js/app.js"></script>
 </body>
 </html>
