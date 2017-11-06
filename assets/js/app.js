@@ -46,7 +46,7 @@ $(document).ready(function(){
         movie = $("#movie-input").val().trim();
         offset = 0;
         movieSearch();
-        $(".results").html("");
+        //$(".results").html("");
         $("#movie-input").val("")
     });
 
