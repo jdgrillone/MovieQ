@@ -1,21 +1,36 @@
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyDDKTaqtZzvPCFh-pyUS1qE10U98Gd3IjQ",
+    authDomain: "movieq-a6081.firebaseapp.com",
+    databaseURL: "https://movieq-a6081.firebaseio.com",
+    projectId: "movieq-a6081",
+    storageBucket: "movieq-a6081.appspot.com",
+    messagingSenderId: "921826093279"
+};
+firebase.initializeApp(config);
+
+var database = firebase.database();
+
 $(document).ready(function(){
-	var movie = "";
-	var offset = 0;
-	function movieSearch() {
-		var queryURL = "https://api.themoviedb.org/3/search/movie?api_key=cb3ac66f262794533540ec467d2c75f1&query=" + movie;
-        $(".results").html("");
+
+
+var movie = "";
+var offset = 0;
+function movieSearch() {
+  var queryURL = "https://api.themoviedb.org/3/search/movie?api_key=cb3ac66f262794533540ec467d2c75f1&query=" + movie;
+  $(".results").html("");
         // Creating an AJAX call for the specific movie being searched
         $.ajax({
           url: queryURL,
           method: "GET"
-        }).done(function(response) {
+      }).done(function(response) {
           console.log(response);
 
           for (var i = 0; i < 3; i++) {
             // Creating a div to hold the movie
             var movieDiv = $("<div class='movie'>");
             movieDiv.attr("value", response.results[i + offset].id);
-          
+
             // Storing the title data
             var title = response.results[i + offset].title;
 
@@ -33,12 +48,12 @@ $(document).ready(function(){
 
             // Displaying the release year
             movieDiv.append(pTwo);
-          
+
             // Putting the entire movie in the search results
             $(".results").append(movieDiv);
-          }
-        });
-	};
+        }
+    });
+  };
     // This function handles events where the search button is clicked
     $("#movie-search").on("click", function(event) {
         event.preventDefault();
@@ -51,22 +66,22 @@ $(document).ready(function(){
     });
 
     $(".prev").on("click", function(event) {
-      	event.preventDefault();
+       event.preventDefault();
 
-      	if (offset >= 3) {
-      		offset -= 3;
-      		movieSearch();
-      	}
-    });
+       if (offset >= 3) {
+        offset -= 3;
+        movieSearch();
+    }
+});
 
     $(".next").on("click", function(event) {
-      	event.preventDefault();
+       event.preventDefault();
 
-      	if (offset < 15) {
-      		offset += 3;
-      		movieSearch();
-      	}
-    });
+       if (offset < 15) {
+        offset += 3;
+        movieSearch();
+    }
+});
 
     // displayRecommendations function re-renders the HTML to display the appropriate content
     function displayRecommendations() {
@@ -74,18 +89,18 @@ $(document).ready(function(){
         var movieID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "/recommendations?api_key=cb3ac66f262794533540ec467d2c75f1&language=en-US&page=1";
 
-            $(".carousel").html("");
-            $(".carousel").attr("class", "carousel");
+        $(".carousel").html("");
+        $(".carousel").attr("class", "carousel");
         // Creating an AJAX call for the specific movie button being clicked
         $.ajax({
           url: queryURL,
           method: "GET"
-        }).done(function(response) {
+      }).done(function(response) {
           console.log(response);
 
           if (response.results.length < 1) {
             nodisplay();
-          } else {
+        } else {
 
           $("#message").text("");
 
@@ -133,13 +148,13 @@ $(document).ready(function(){
             // Putting the entire movie above the previous movies
             $(".carousel").append(movieDiv);
 
-          }
-
-          $(".carousel").carousel();
         }
-        });
 
+        $(".carousel").carousel();
     }
+});
+
+  }
 
     // displayRecommendations function re-renders the HTML to display the appropriate content
     function displayGenreRecommendations() {
@@ -147,18 +162,18 @@ $(document).ready(function(){
         var genreID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/discover/movie?with_genres=" + genreID + "&page=1&include_video=false&include_adult=false&sort_by=popularity.desc&language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
 
-            $(".carousel").html("");
-            $(".carousel").carousel("destroy");
+        $(".carousel").html("");
+        $(".carousel").carousel("destroy");
         // Creating an AJAX call for the specific movie button being clicked
         $.ajax({
           url: queryURL,
           method: "GET"
-        }).done(function(response) {
+      }).done(function(response) {
           console.log(response);
 
           if (response.results.length < 1) {
             nodisplay();
-          } else {
+        } else {
 
           $("#message").text("");
 
@@ -206,26 +221,26 @@ $(document).ready(function(){
             // Putting the entire movie above the previous movies
             $(".carousel").append(movieDiv);
 
-          }
-
-          $(".carousel").carousel();
         }
-        });
 
+        $(".carousel").carousel();
     }
+});
+
+  }
 
     // displayRecommendationInfo function re-renders the HTML to display the appropriate content
     function displayRecommendationInfo(event) {
     	event.preventDefault();
-      	$("#recommendation-info").html("");
-        var movieID = $(this).attr("value");
-        var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
+       $("#recommendation-info").html("");
+       var movieID = $(this).attr("value");
+       var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
 
         // Creating an AJAX call for the specific recommendation button being clicked
         $.ajax({
           url: queryURL,
           method: "GET"
-        }).done(function(response) {
+      }).done(function(response) {
           console.log(response);          
 
             // Creating a div to hold the movie
@@ -267,14 +282,20 @@ $(document).ready(function(){
             // Appending the image
             movieDiv.append(image);
 
-            
+            // Push info to Firebase
+            database.ref().push({
+                title: title,
+                id: movieID,
+                imgURL: imgURL,
+                dateAdded: firebase.database.ServerValue.TIMESTAMP
+            });
 
             // Putting the entire movie above the previous movies
             $("#recommendation-info").append(movieDiv);
-        
+
         });
 
-    }
+  }
 
     // Adding a click event listener to all elements with a class of "movie"
     $(document).on("click", ".movie", displayRecommendations);
@@ -289,6 +310,22 @@ $(document).ready(function(){
 
 });
 
+// Function to display text if there are no recommendations
 function nodisplay() {
   $("#message").text("Sorry, there are no results for that")
 };
+
+// Pulls last 5 items from database and appends them to #recently-viewed
+database.ref().orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+
+    var recentItem = $("<span>");
+    //adds class for styling purposes
+    recentItem.attr("class", "recent")
+    var image = $("<img>").attr("src", snapshot.val().imgURL);
+    //data value for displayRecommendationInfo function
+    image.attr("value", snapshot.val().id);
+    //classes for event listener and styling
+    image.attr("class", "recommend imagesmall");
+    recentItem.append(image);
+    $("#recently-viewed").prepend(recentItem);
+  });
