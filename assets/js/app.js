@@ -14,74 +14,83 @@ var database = firebase.database();
 $(document).ready(function(){
 
 
-var movie = "";
-var offset = 0;
-function movieSearch() {
-  var queryURL = "https://api.themoviedb.org/3/search/movie?api_key=cb3ac66f262794533540ec467d2c75f1&query=" + movie;
-  $(".results").html("");
-        // Creating an AJAX call for the specific movie being searched
-        $.ajax({
-          url: queryURL,
-          method: "GET"
-      }).done(function(response) {
-          console.log(response);
+	var movie = "";
+	var offset = 0;
+	function movieSearch() {
+		var queryURL = "https://api.themoviedb.org/3/search/movie?api_key=cb3ac66f262794533540ec467d2c75f1&query=" + movie;
+		$(".results").html("");
+	        // Creating an AJAX call for the specific movie being searched
+	        $.ajax({
+	          url: queryURL,
+	          method: "GET"
+	      	}).done(function(response) {
 
-          for (var i = 0; i < 3; i++) {
-            // Creating a div to hold the movie
-            var movieDiv = $("<div class='movie'>");
-            movieDiv.attr("value", response.results[i + offset].id);
+	        	console.log(response);
 
-            // Storing the title data
-            var title = response.results[i + offset].title;
+	        	if (offset >= 3) {
+	    			$("#prev").attr("class", "btn-floating blue");
+	    		}
+	    		if (offset < 15) {
+	    			$("#next").attr("class", "btn-floating blue");
+	    		}
 
-            // // Creating an element to have the rating displayed
-            // var pOne = $("<p>").text("Title: " + title);
+	        	for (var i = 0; i < 3; i++) {
+		            // Creating a div to hold the movie
+		            var movieDiv = $("<div class='movie'>");
+		            movieDiv.attr("value", response.results[i + offset].id);
 
-            // // Displaying the rating
-                    // movieDiv.append(pOne);
+		            // Storing the title data
+		            var title = response.results[i + offset].title;
 
-            // Storing the release year
-            var released = response.results[i + offset].release_date.substring(0, 4);
+		            // Storing the release year
+		            var released = response.results[i + offset].release_date.substring(0, 4);
 
-            // Creating an element to hold the release year
-            var pTwo = $("<p>").text('"' + title + '" -- ' + released);
+		            // Creating an element to hold the release year
+		            var pTwo = $("<p>").text('"' + title + '" -- ' + released);
 
-            // Displaying the release year
-            movieDiv.append(pTwo);
+		            // Displaying the release year
+		            movieDiv.append(pTwo);
 
-            // Putting the entire movie in the search results
-            $(".results").append(movieDiv);
-        }
-    });
-  };
+		            // Putting the entire movie in the search results
+		            $(".results").append(movieDiv);
+	        	}
+
+		        if (offset < 3) {
+		    		$("#prev").attr("class", "btn-floating blue disabled");
+		    	}
+		    	if (offset >= 15) {
+		    		$("#next").attr("class", "btn-floating blue disabled");
+		    	}
+	    });// End of ajax.done function
+	};// End of movieSearch function
+
     // This function handles events where the search button is clicked
     $("#movie-search").on("click", function(event) {
-        event.preventDefault();
+    	event.preventDefault();
         // This line grabs the input from the textbox
         movie = $("#movie-input").val().trim();
         offset = 0;
         movieSearch();
-        //$(".results").html("");
         $("#movie-input").val("")
     });
 
-    $(".prev").on("click", function(event) {
+    $("#prev").on("click", function(event) {
        event.preventDefault();
 
-       if (offset >= 3) {
-        offset -= 3;
-        movieSearch();
-    }
-});
+       	if (offset >= 3) {
+       		offset -= 3;
+        	movieSearch();
+    	}
+	});
 
-    $(".next").on("click", function(event) {
-       event.preventDefault();
+    $("#next").on("click", function(event) {
+    	event.preventDefault();
 
-       if (offset < 15) {
-        offset += 3;
-        movieSearch();
-    }
-});
+    	if (offset < 15) {
+       		offset += 3;
+        	movieSearch();
+    	}
+	});
 
     // displayRecommendations function re-renders the HTML to display the appropriate content
     function displayRecommendations() {
@@ -93,70 +102,43 @@ function movieSearch() {
         $(".carousel").attr("class", "carousel");
         // Creating an AJAX call for the specific movie button being clicked
         $.ajax({
-          url: queryURL,
-          method: "GET"
-      }).done(function(response) {
-          console.log(response);
+        	url: queryURL,
+        	method: "GET"
+    	}).done(function(response) {
+        	console.log(response);
 
-          if (response.results.length < 1) {
-            nodisplay();
-        } else {
+        	if (response.results.length < 1) {
+            	nodisplay();
+        	} else {
 
-          $("#message").text("");
+	        	$("#message").text("");
 
-          for (var i = 0; i < 10; i++) {
-            // Creating a div to hold the movie
-            var movieDiv = $("<div class='carousel-item recommend'>");
-            movieDiv.attr("value", response.results[i].id);
+	        	for (var i = 0; i < 10; i++) {
+		            // Creating a div to hold the movie
+		            var movieDiv = $("<div class='carousel-item recommend'>");
+		            movieDiv.attr("value", response.results[i].id);
 
-            // // Storing the rating data
-            // var rating = response.Rated;
+		            // Retrieving the URL for the image
+		            var imgURL = "https://image.tmdb.org/t/p/w185" + response.results[i].poster_path;
 
-            // // Creating an element to have the rating displayed
-            // var pOne = $("<p>").text("Rating: " + rating);
+		            // Creating an element to hold the image
+		            var image = $("<img>").attr("src", imgURL);
 
-            // // Displaying the rating
-            // movieDiv.append(pOne);
+		            // Appending the image
+		            movieDiv.append(image);
 
-            // // Storing the release year
-            // var released = response.results[0].release_date;
+		            // Putting the entire movie above the previous movies
+		            $(".carousel").append(movieDiv);
 
-            // // Creating an element to hold the release year
-            // var pTwo = $("<p>").text("Released: " + released);
+	        	}
 
-            // // Displaying the release year
-            // movieDiv.append(pTwo);
+	        	$(".carousel").carousel();
+	    	}
+		});// End of ajax.done function
 
-            // // Storing the plot
-            // var plot = response.results[0].overview;
+	}; // End of displayRecommendations function
 
-            // // Creating an element to hold the plot
-            // var pThree = $("<p>").text("Plot: " + plot);
-
-            // // Appending the plot
-            // movieDiv.append(pThree);
-
-            // Retrieving the URL for the image
-            var imgURL = "https://image.tmdb.org/t/p/w185" + response.results[i].poster_path;
-
-            // Creating an element to hold the image
-            var image = $("<img>").attr("src", imgURL);
-
-            // Appending the image
-            movieDiv.append(image);
-
-            // Putting the entire movie above the previous movies
-            $(".carousel").append(movieDiv);
-
-        }
-
-        $(".carousel").carousel();
-    }
-});
-
-  }
-
-    // displayRecommendations function re-renders the HTML to display the appropriate content
+    // displayGenraRecommendations function re-renders the HTML to display the appropriate content
     function displayGenreRecommendations() {
 
         var genreID = $(this).attr("value");
@@ -166,82 +148,55 @@ function movieSearch() {
         $(".carousel").carousel("destroy");
         // Creating an AJAX call for the specific movie button being clicked
         $.ajax({
-          url: queryURL,
-          method: "GET"
-      }).done(function(response) {
-          console.log(response);
+        	url: queryURL,
+        	method: "GET"
+    	}).done(function(response) {
+        	console.log(response);
 
-          if (response.results.length < 1) {
-            nodisplay();
-        } else {
+        	if (response.results.length < 1) {
+            	nodisplay();
+        	} else {
 
-          $("#message").text("");
+		        $("#message").text("");
 
-          for (var i = 0; i < 10; i++) {
-            // Creating a div to hold the movie
-            var movieDiv = $("<div class='carousel-item recommend'>");
-            movieDiv.attr("value", response.results[i].id);
+		        for (var i = 0; i < 10; i++) {
+		            // Creating a div to hold the movie
+		            var movieDiv = $("<div class='carousel-item recommend'>");
+		            movieDiv.attr("value", response.results[i].id);
 
-            // // Storing the rating data
-            // var rating = response.Rated;
+		            // Retrieving the URL for the image
+		            var imgURL = "https://image.tmdb.org/t/p/w185" + response.results[i].poster_path;
 
-            // // Creating an element to have the rating displayed
-            // var pOne = $("<p>").text("Rating: " + rating);
+		            // Creating an element to hold the image
+		            var image = $("<img>").attr("src", imgURL);
 
-            // // Displaying the rating
-            // movieDiv.append(pOne);
+		            // Appending the image
+		            movieDiv.append(image);
 
-            // // Storing the release year
-            // var released = response.results[0].release_date;
+		            // Putting the entire movie above the previous movies
+		            $(".carousel").append(movieDiv);
 
-            // // Creating an element to hold the release year
-            // var pTwo = $("<p>").text("Released: " + released);
+		        }
 
-            // // Displaying the release year
-            // movieDiv.append(pTwo);
+		        $(".carousel").carousel();
+		    }
+		});// End of ajax.done function
 
-            // // Storing the plot
-            // var plot = response.results[0].overview;
-
-            // // Creating an element to hold the plot
-            // var pThree = $("<p>").text("Plot: " + plot);
-
-            // // Appending the plot
-            // movieDiv.append(pThree);
-
-            // Retrieving the URL for the image
-            var imgURL = "https://image.tmdb.org/t/p/w185" + response.results[i].poster_path;
-
-            // Creating an element to hold the image
-            var image = $("<img>").attr("src", imgURL);
-
-            // Appending the image
-            movieDiv.append(image);
-
-            // Putting the entire movie above the previous movies
-            $(".carousel").append(movieDiv);
-
-        }
-
-        $(".carousel").carousel();
-    }
-});
-
-  }
+	};// End of displayGenreRecommendations fucntion
 
     // displayRecommendationInfo function re-renders the HTML to display the appropriate content
     function displayRecommendationInfo(event) {
     	event.preventDefault();
-       $("#recommendation-info").html("");
-       var movieID = $(this).attr("value");
-       var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
+    	$("#recommendation-info").html("");
+    	var movieID = $(this).attr("value");
+    	var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
 
         // Creating an AJAX call for the specific recommendation button being clicked
         $.ajax({
           url: queryURL,
           method: "GET"
-      }).done(function(response) {
-          console.log(response);          
+    	}).done(function(response) {
+        	console.log(response);          
 
             // Creating a div to hold the movie
             var movieDiv = $("<div class='recommend-info'>");
@@ -280,7 +235,7 @@ function movieSearch() {
             var image = $("<img>").attr("src", imgURL);
 
             // Appending the image
-            movieDiv.append(image);
+            movieDiv.prepend(image);
 
             // Push info to Firebase
             database.ref().push({
@@ -292,10 +247,8 @@ function movieSearch() {
 
             // Putting the entire movie above the previous movies
             $("#recommendation-info").append(movieDiv);
-
-        });
-
-  }
+        });// End of ajax.done function
+	};// End of displayRecommendationInfo function
 
     // Adding a click event listener to all elements with a class of "movie"
     $(document).on("click", ".movie", displayRecommendations);
@@ -306,13 +259,11 @@ function movieSearch() {
     // Adding a click event listener to all elements with a class of "recommend"
     $(document).on("click", ".recommend", displayRecommendationInfo);
 
-
-
-});
+});// End of document.ready function
 
 // Function to display text if there are no recommendations
 function nodisplay() {
-  $("#message").text("Sorry, there are no results for that")
+	$("#message").text("Sorry, there are no results for that")
 };
 
 // Pulls last 5 items from database and appends them to #recently-viewed
@@ -328,4 +279,4 @@ database.ref().orderByChild("dateAdded").limitToLast(5).on("child_added", functi
     image.attr("class", "recommend imagesmall");
     recentItem.append(image);
     $("#recently-viewed").prepend(recentItem);
-  });
+});
