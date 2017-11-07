@@ -198,11 +198,11 @@ $(document).ready(function(){
         $.ajax({
           url: queryURL,
           method: "GET"
-      }).done(function(response) {
-       console.log(response);          
+      	}).done(function(response) {
+        	console.log(response);
 
             // Creating a div to hold the movie
-            var movieDiv = $("<div class='recommend-info'>");
+            var movieDiv = $("<div class='row recommend-info'>");
 
             // Storing the title data
             var title = response.title;
@@ -235,7 +235,7 @@ $(document).ready(function(){
             var imgURL = "https://image.tmdb.org/t/p/w185" + response.poster_path;
 
             // Creating an element to hold the image
-            var image = $("<img>").attr("src", imgURL);
+            var image = $("<img class='col s3'>").attr("src", imgURL);
 
             // Appending the image
             movieDiv.prepend(image);
@@ -251,8 +251,49 @@ $(document).ready(function(){
             });
 
             // Putting the entire movie above the previous movies
-            $("#recommendation-info").append(movieDiv);
+            $("#recommendation-info").prepend(movieDiv);
+
         });// End of ajax.done function
+        // 2. This code loads the IFrame Player API code asynchronously.
+	    var tag = document.createElement('script');
+
+	    tag.src = "https://www.youtube.com/iframe_api";
+	    var firstScriptTag = document.getElementsByTagName('script')[0];
+	    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+	    // 3. This function creates an <iframe> (and YouTube player)
+	    //    after the API code downloads.
+	    var player;
+	    function onYouTubeIframeAPIReady() {
+	        player = new YT.Player('player', {
+	        	height: '390',
+	        	width: '640',
+	        	videoId: 'M7lc1UVf-VE',
+	        	events: {
+	            	'onReady': onPlayerReady,
+	            	'onStateChange': onPlayerStateChange
+	        	}
+	        });
+	    }
+
+	    // 4. The API will call this function when the video player is ready.
+	    function onPlayerReady(event) {
+	        event.target.playVideo();
+	    }
+
+	    // 5. The API calls this function when the player's state changes.
+	    //    The function indicates that when playing a video (state=1),
+	    //    the player should play for six seconds and then stop.
+	    var done = false;
+	    function onPlayerStateChange(event) {
+	        if (event.data == YT.PlayerState.PLAYING && !done) {
+	        	setTimeout(stopVideo, 6000);
+	        	done = true;
+	        }
+	    }
+	    function stopVideo() {
+	        player.stopVideo();
+	    }
 	};// End of displayRecommendationInfo function
 
     // Adding a click event listener to all elements with a class of "movie"
