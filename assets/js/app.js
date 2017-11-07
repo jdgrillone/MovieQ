@@ -112,7 +112,7 @@ $(document).ready(function(){
 
         	if (response.results.length < 1) {
                nodisplay();
-           } else {
+        	} else {
 
               $("#message").text("");
 
@@ -136,7 +136,7 @@ $(document).ready(function(){
               }
 
               $(".carousel").carousel();
-          }
+        	}
 		});// End of ajax.done function
 
 	}; // End of displayRecommendations function
@@ -149,7 +149,7 @@ $(document).ready(function(){
 
         $(".carousel").html("");
         $(".carousel").carousel("destroy");
-        // Creating an AJAX call for the specific movie button being clicked
+        // Creating an AJAX call for the specific genre being clicked
         $.ajax({
         	url: queryURL,
         	method: "GET"
@@ -158,7 +158,7 @@ $(document).ready(function(){
 
         	if (response.results.length < 1) {
                nodisplay();
-           } else {
+        	} else {
 
               $("#message").text("");
 
@@ -193,11 +193,13 @@ $(document).ready(function(){
     	$("#recommendation-info").html("");
     	var movieID = $(this).attr("value");
     	var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
+    	var pFive;
+    	var pTwo = $("<p>");
 
         // Creating an AJAX call for the specific recommendation button being clicked
         $.ajax({
-          url: queryURL,
-          method: "GET"
+        	url: queryURL,
+        	method: "GET"
       	}).done(function(response) {
         	console.log(response);
 
@@ -217,25 +219,69 @@ $(document).ready(function(){
             // Displaying the title
             movieDiv.append(pOne);
 
+            // Ajax call to grab the MPAA rating
+            $.ajax({
+	        	url: "https://api.themoviedb.org/3/movie/"+movieID+"/release_dates?api_key=cb3ac66f262794533540ec467d2c75f1",
+	        	method: "GET"
+	        }).done(function(response) {
+	        	console.log(response);
+
+				for (var i = 0; i < response.results.length; i++) {
+					if (response.results[i].iso_3166_1 === "US") {
+						// Filling the <p> with the rating
+						pTwo.html("<b>Rated:</b> "+response.results[i].release_dates[0].certification);
+						break;
+					}
+				}
+			});// End of ajax.done function
+
+			movieDiv.append(pTwo)
+
             // Storing the release year
             var released = response.release_date;
             var convertedDate = moment(released, "YYYY-MM-DD");
             released = convertedDate.format("MM/DD/YYYY");
 
             // Creating an element to hold the release year
-            var pTwo = $("<p>").html("<b>Released:</b> " + released);
+            var pThree = $("<p>").html("<b>Released:</b> " + released);
 
             // Displaying the release year
-            movieDiv.append(pTwo);
+            movieDiv.append(pThree);
 
             // Storing the plot
             var plot = response.overview;
 
             // Creating an element to hold the plot
-            var pThree = $("<p>").html("<b>Plot Summary:</b> " + plot);
+            pFive = $("<p>").html("<b>Plot Summary:</b> " + plot);
 
-            // Appending the plot
-            movieDiv.append(pThree);
+            // Ajax call to grab the cast
+            $.ajax({
+	        	url: "https://api.themoviedb.org/3/movie/"+movieID+"/credits?api_key=cb3ac66f262794533540ec467d2c75f1",
+	        	method: "GET"
+	        }).done(function(response) {
+	        	console.log(response);
+
+	        	var pFour = $("<p>").html("<b>Cast:</b> ");
+
+	        	for (var i = 0; i<4; i++) {
+	        		var performerID = response.cast[i].id;
+
+	        		$.ajax({
+			        	url: "https://api.themoviedb.org/3/person/"+performerID+"?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1",
+			        	method: "GET"
+			        }).done(function(response) {
+			        	console.log(response);
+
+						pFour.append("<a href='http://www.imdb.com/name/"+response.imdb_id+"/' target='_blank'>"+response.name+"</a>, ");
+					});// End of ajax.done function
+	        	}
+
+			    // Appending the image
+			    movieDiv.append(pFour);
+
+			    // Appending the plot
+            	movieDiv.append(pFive);
+			});// End of ajax.done function
 
             // Retrieving the URL for the image
             var imgURL = "https://image.tmdb.org/t/p/w185" + response.poster_path;
@@ -250,7 +296,8 @@ $(document).ready(function(){
             var tagline = response.tagline;
 
             // Creating tagline element
-            var hFive = $("<h5>").text(tagline);
+            var hFive = $("<h5 id='tagline'>").text(tagline);
+            hFive.css("padding", "0 .75rem");
 
             // Displaying tagline
             movieDiv.prepend(hFive);
@@ -269,7 +316,11 @@ $(document).ready(function(){
             $("#recommendation-info").append(movieDiv);
 
         });// End of ajax.done function
+
+        // Clear old iframe and replace with default div
       	$("#player-parent").html('<div id="player">');
+
+      	// Ajax call for the movie trailer
         $.ajax({
           url: "https://api.themoviedb.org/3/movie/"+movieID+"/videos?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1",
           method: "GET"
@@ -280,7 +331,7 @@ $(document).ready(function(){
 		    //function onYouTubeIframeAPIReady() {
 		        player = new YT.Player('player', {
 		        	height: '390',
-		        	width: '640',
+		        	width: '100%',
 		        	videoId: response.results[0].key,
 		        	events: {
 		            	'onReady': onPlayerReady,
@@ -308,7 +359,8 @@ $(document).ready(function(){
 		        player.stopVideo();
 		    }
 
-	        });
+		    //$("#player").css("margin", "0 50%");
+	    });// End of trailer ajax call
 	};// End of displayRecommendationInfo function
 
     // Adding a click event listener to all elements with a class of "movie"
