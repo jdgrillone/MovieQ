@@ -208,16 +208,22 @@ $(document).ready(function(){
             var title = response.title;
 
             // Creating an element to have the rating displayed
-            var pOne = $("<p>").text("Title: " + title);
+            if (response.homepage !== "") {
+            	var pOne = $("<p>").html("<b>Title:</b> <a href='"+response.homepage+"' target='_blank'><u>" + title + "</u></a>");
+            } else {
+            	var pOne = $("<p>").html("<b>Title:</b> <u>" + title + "</u>");
+            }
 
             // Displaying the title
             movieDiv.append(pOne);
 
             // Storing the release year
             var released = response.release_date;
+            var convertedDate = moment(released, "YYYY-MM-DD");
+            released = convertedDate.format("MM/DD/YYYY");
 
             // Creating an element to hold the release year
-            var pTwo = $("<p>").text("Released: " + released);
+            var pTwo = $("<p>").html("<b>Released:</b> " + released);
 
             // Displaying the release year
             movieDiv.append(pTwo);
@@ -226,7 +232,7 @@ $(document).ready(function(){
             var plot = response.overview;
 
             // Creating an element to hold the plot
-            var pThree = $("<p>").text("Plot Summary: " + plot);
+            var pThree = $("<p>").html("<b>Plot Summary:</b> " + plot);
 
             // Appending the plot
             movieDiv.append(pThree);
@@ -239,6 +245,15 @@ $(document).ready(function(){
 
             // Appending the image
             movieDiv.prepend(image);
+
+            // Storing the tagline
+            var tagline = response.tagline;
+
+            // Creating tagline element
+            var hFive = $("<h5>").text(tagline);
+
+            // Displaying tagline
+            movieDiv.prepend(hFive);
 
 
 
@@ -284,8 +299,8 @@ $(document).ready(function(){
 		    //    the player should play for six seconds and then stop.
 		    var done = false;
 		    function onPlayerStateChange(event) {
-		        if (event.data == YT.PlayerState.PLAYING && !done) {
-		        	setTimeout(stopVideo, 30000);
+		        if (event.data === YT.PlayerState.PLAYING && !done) {
+		        	setTimeout(stopVideo, 23750);
 		        	done = true;
 		        }
 		    }
