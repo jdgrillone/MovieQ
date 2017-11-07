@@ -213,7 +213,7 @@ $(document).ready(function(){
             if (response.homepage !== "") {
             	var pOne = $("<p>").html("<b>Title:</b> <a href='"+response.homepage+"' target='_blank'><u>" + title + "</u></a>");
             } else {
-            	var pOne = $("<p>").html("<b>Title:</b> <u>" + title + "</u>");
+            	var pOne = $("<p>").html("<b>Title:</b> <a href='http://www.imdb.com/title/"+response.imdb_id+"/' target='_blank'><u>" + title + "</u></a>");
             }
 
             // Displaying the title
