@@ -1,4 +1,6 @@
-#next-previous-buttons {margin-top: 10px;};
+#next-previous-buttons {
+	margin-top: 10px;
+}
 
 .recent {
 	padding: 20px;
@@ -10,8 +12,18 @@
 	padding: 5px;
 }
 
-#index-banner {background-image: url("../css/film-reel.jpg");
-				
-				height: 300px;
-				width: 100%;
+#index-banner {
+	background-image: url("../css/film-reel.jpg");		
+	height: 300px;
+	width: 100%;
 }
+
+#genre-heading {
+	padding-top: 5px;
+	border-top: solid 1px;
+}
+
+#next-previous-buttons {
+	padding-bottom: 10px;
+}
+
