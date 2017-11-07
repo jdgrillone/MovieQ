@@ -102,7 +102,7 @@ $(document).ready(function(){
         var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "/recommendations?api_key=cb3ac66f262794533540ec467d2c75f1&language=en-US&page=1";
 
         $(".carousel").html("");
-        $(".carousel").attr("class", "carousel");
+        $(".carousel").carousel("destroy");
         // Creating an AJAX call for the specific movie button being clicked
         $.ajax({
         	url: queryURL,
