@@ -11,6 +11,9 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
+var recentmovies = [];
+var indexOf = 0;
+
 $(document).ready(function(){
 
 
@@ -21,20 +24,20 @@ $(document).ready(function(){
 		$(".results").html("");
 	        // Creating an AJAX call for the specific movie being searched
 	        $.ajax({
-	          url: queryURL,
-	          method: "GET"
-	      	}).done(function(response) {
+               url: queryURL,
+               method: "GET"
+           }).done(function(response) {
 
-	        	console.log(response);
+              console.log(response);
 
-	        	if (offset >= 3) {
-	    			$("#prev").attr("class", "btn-floating blue");
-	    		}
-	    		if (offset < 15) {
-	    			$("#next").attr("class", "btn-floating blue");
-	    		}
+              if (offset >= 3) {
+                $("#prev").attr("class", "btn-floating blue");
+            }
+            if (offset < 15) {
+                $("#next").attr("class", "btn-floating blue");
+            }
 
-	        	for (var i = 0; i < 3; i++) {
+            for (var i = 0; i < 3; i++) {
 		            // Creating a div to hold the movie
 		            var movieDiv = $("<div class='movie'>");
 		            movieDiv.attr("value", response.results[i + offset].id);
@@ -53,14 +56,14 @@ $(document).ready(function(){
 
 		            // Putting the entire movie in the search results
 		            $(".results").append(movieDiv);
-	        	}
+              }
 
-		        if (offset < 3) {
-		    		$("#prev").attr("class", "btn-floating blue disabled");
-		    	}
-		    	if (offset >= 15) {
-		    		$("#next").attr("class", "btn-floating blue disabled");
-		    	}
+              if (offset < 3) {
+                $("#prev").attr("class", "btn-floating blue disabled");
+            }
+            if (offset >= 15) {
+                $("#next").attr("class", "btn-floating blue disabled");
+            }
 	    });// End of ajax.done function
 	};// End of movieSearch function
 
@@ -77,20 +80,20 @@ $(document).ready(function(){
     $("#prev").on("click", function(event) {
        event.preventDefault();
 
-       	if (offset >= 3) {
-       		offset -= 3;
-        	movieSearch();
-    	}
-	});
+       if (offset >= 3) {
+         offset -= 3;
+         movieSearch();
+     }
+ });
 
     $("#next").on("click", function(event) {
     	event.preventDefault();
 
     	if (offset < 15) {
-       		offset += 3;
-        	movieSearch();
-    	}
-	});
+         offset += 3;
+         movieSearch();
+     }
+ });
 
     // displayRecommendations function re-renders the HTML to display the appropriate content
     function displayRecommendations() {
@@ -104,16 +107,16 @@ $(document).ready(function(){
         $.ajax({
         	url: queryURL,
         	method: "GET"
-    	}).done(function(response) {
+        }).done(function(response) {
         	console.log(response);
 
         	if (response.results.length < 1) {
-            	nodisplay();
-        	} else {
+             nodisplay();
+         } else {
 
-	        	$("#message").text("");
+          $("#message").text("");
 
-	        	for (var i = 0; i < 10; i++) {
+          for (var i = 0; i < 10; i++) {
 		            // Creating a div to hold the movie
 		            var movieDiv = $("<div class='carousel-item recommend'>");
 		            movieDiv.attr("value", response.results[i].id);
@@ -130,10 +133,10 @@ $(document).ready(function(){
 		            // Putting the entire movie above the previous movies
 		            $(".carousel").append(movieDiv);
 
-	        	}
+              }
 
-	        	$(".carousel").carousel();
-	    	}
+              $(".carousel").carousel();
+          }
 		});// End of ajax.done function
 
 	}; // End of displayRecommendations function
@@ -150,16 +153,16 @@ $(document).ready(function(){
         $.ajax({
         	url: queryURL,
         	method: "GET"
-    	}).done(function(response) {
+        }).done(function(response) {
         	console.log(response);
 
         	if (response.results.length < 1) {
-            	nodisplay();
-        	} else {
+             nodisplay();
+         } else {
 
-		        $("#message").text("");
+          $("#message").text("");
 
-		        for (var i = 0; i < 10; i++) {
+          for (var i = 0; i < 10; i++) {
 		            // Creating a div to hold the movie
 		            var movieDiv = $("<div class='carousel-item recommend'>");
 		            movieDiv.attr("value", response.results[i].id);
@@ -195,8 +198,8 @@ $(document).ready(function(){
         $.ajax({
           url: queryURL,
           method: "GET"
-    	}).done(function(response) {
-        	console.log(response);          
+      }).done(function(response) {
+         console.log(response);          
 
             // Creating a div to hold the movie
             var movieDiv = $("<div class='recommend-info'>");
@@ -237,8 +240,18 @@ $(document).ready(function(){
             // Appending the image
             movieDiv.prepend(image);
 
+            for (i = 0; i < recentmovies.length; i++) {
+                if (recentmovies[i].val().id === movieID) {
+                    indexOf = [i];
+                    break;
+                }
+            };
+            if (movieID === recentmovies[indexOf].val().id) {
+                recentmovies[indexOf].ref.remove();
+            };
+
             // Push info to Firebase
-            database.ref().push({
+            database.ref("/movies").push({
                 title: title,
                 id: movieID,
                 imgURL: imgURL,
@@ -266,8 +279,15 @@ function nodisplay() {
 	$("#message").text("Sorry, there are no results for that")
 };
 
+
+
+
 // Pulls last 5 items from database and appends them to #recently-viewed
-database.ref().orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+database.ref("/movies").orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+
+
+
+    recentmovies.unshift(snapshot);
 
     var recentItem = $("<span>");
     //adds class for styling purposes
@@ -275,8 +295,23 @@ database.ref().orderByChild("dateAdded").limitToLast(5).on("child_added", functi
     var image = $("<img>").attr("src", snapshot.val().imgURL);
     //data value for displayRecommendationInfo function
     image.attr("value", snapshot.val().id);
+    recentItem.attr("id", snapshot.val().id);
     //classes for event listener and styling
     image.attr("class", "recommend imagesmall");
     recentItem.append(image);
     $("#recently-viewed").prepend(recentItem);
+
+    //set up a listener on snapshot for on remove
+
+
+    if (recentmovies.length > 5) {
+        for (i = 5; i < recentmovies.length; i++){
+            recentmovies[i].ref.remove();
+        }
+    }
+});
+
+database.ref("/movies").on("child_removed", function(snapshot) {
+    console.log(snapshot.val());
+    $("#" + snapshot.val().id).remove();
 });
