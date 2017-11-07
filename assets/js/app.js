@@ -24,20 +24,20 @@ $(document).ready(function(){
 		$(".results").html("");
 	        // Creating an AJAX call for the specific movie being searched
 	        $.ajax({
-               url: queryURL,
-               method: "GET"
-           }).done(function(response) {
+             url: queryURL,
+             method: "GET"
+         }).done(function(response) {
 
-              console.log(response);
+          console.log(response);
 
-              if (offset >= 3) {
-                $("#prev").attr("class", "btn-floating blue");
-            }
-            if (offset < 15) {
-                $("#next").attr("class", "btn-floating blue");
-            }
+          if (offset >= 3) {
+            $("#prev").attr("class", "btn-floating blue");
+        }
+        if (offset < 15) {
+            $("#next").attr("class", "btn-floating blue");
+        }
 
-            for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < 3; i++) {
 		            // Creating a div to hold the movie
 		            var movieDiv = $("<div class='movie'>");
 		            movieDiv.attr("value", response.results[i + offset].id);
@@ -78,22 +78,22 @@ $(document).ready(function(){
     });
 
     $("#prev").on("click", function(event) {
-       event.preventDefault();
+     event.preventDefault();
 
-       if (offset >= 3) {
-         offset -= 3;
-         movieSearch();
-     }
- });
+     if (offset >= 3) {
+       offset -= 3;
+       movieSearch();
+   }
+});
 
     $("#next").on("click", function(event) {
     	event.preventDefault();
 
     	if (offset < 15) {
-         offset += 3;
-         movieSearch();
-     }
- });
+           offset += 3;
+           movieSearch();
+       }
+   });
 
     // displayRecommendations function re-renders the HTML to display the appropriate content
     function displayRecommendations() {
@@ -111,12 +111,12 @@ $(document).ready(function(){
         	console.log(response);
 
         	if (response.results.length < 1) {
-             nodisplay();
-         } else {
+               nodisplay();
+           } else {
 
-          $("#message").text("");
+              $("#message").text("");
 
-          for (var i = 0; i < 10; i++) {
+              for (var i = 0; i < 10; i++) {
 		            // Creating a div to hold the movie
 		            var movieDiv = $("<div class='carousel-item recommend'>");
 		            movieDiv.attr("value", response.results[i].id);
@@ -157,12 +157,12 @@ $(document).ready(function(){
         	console.log(response);
 
         	if (response.results.length < 1) {
-             nodisplay();
-         } else {
+               nodisplay();
+           } else {
 
-          $("#message").text("");
+              $("#message").text("");
 
-          for (var i = 0; i < 10; i++) {
+              for (var i = 0; i < 10; i++) {
 		            // Creating a div to hold the movie
 		            var movieDiv = $("<div class='carousel-item recommend'>");
 		            movieDiv.attr("value", response.results[i].id);
@@ -199,7 +199,7 @@ $(document).ready(function(){
           url: queryURL,
           method: "GET"
       }).done(function(response) {
-         console.log(response);          
+       console.log(response);          
 
             // Creating a div to hold the movie
             var movieDiv = $("<div class='recommend-info'>");
@@ -240,15 +240,7 @@ $(document).ready(function(){
             // Appending the image
             movieDiv.prepend(image);
 
-            for (i = 0; i < recentmovies.length; i++) {
-                if (recentmovies[i].val().id === movieID) {
-                    indexOf = [i];
-                    break;
-                }
-            };
-            if (movieID === recentmovies[indexOf].val().id) {
-                recentmovies[indexOf].ref.remove();
-            };
+
 
             // Push info to Firebase
             database.ref("/movies").push({
@@ -285,7 +277,18 @@ function nodisplay() {
 // Pulls last 5 items from database and appends them to #recently-viewed
 database.ref("/movies").orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
 
+    var movieID = snapshot.val().id;
 
+    for (i = 0; i < recentmovies.length; i++) {
+        if (recentmovies[i].val().id === movieID) {
+            indexOf = i;
+            break;
+        }
+    };
+    if (recentmovies[indexOf] && movieID === recentmovies[indexOf].val().id) {
+        recentmovies[indexOf].ref.remove();
+        recentmovies.splice(indexOf, 1);
+    };
 
     recentmovies.unshift(snapshot);
 
@@ -307,7 +310,9 @@ database.ref("/movies").orderByChild("dateAdded").limitToLast(5).on("child_added
     if (recentmovies.length > 5) {
         for (i = 5; i < recentmovies.length; i++){
             recentmovies[i].ref.remove();
+
         }
+        recentmovies = recentmovies.slice(0, 5);
     }
 });
 
