@@ -5,13 +5,20 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
-<body>
-	<!-- nav bar-->
-	<nav>
-		<div class="nav-wrapper">
-			<h1 class="brand-logo center">MovieQ</h1> 
-		</div>
-	</nav>
+<body class="#f5f5f5 grey lighten-4">
+	<div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">MovieQ</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Movie recommendations based on your preferences</h5>
+
+      </div>
+      
+      <br><br>
+
+    </div>
+  </div>
 	<!-- main container-->
 	<div class="container">
 		<div class="row">
@@ -25,7 +32,7 @@
 			</div>
 	<!-- user input -->
 			<div class="col s3">
-				<div id=""><h4>User Input</h4>
+				<div id=""><h5>Search Movies</h5>
 					<input id="movie-input" type="text" class="search">
 					<button id="movie-search" class="btn floating blue" type="search" name="action">Search</button>
 				</div>
@@ -33,42 +40,48 @@
 	
 				<div id="next-previous-buttons">
 
-					<button id="prev" class="btn-floating blue disabled" type="search" name="action"><</button>
-					<button id="next" class="btn-floating blue disabled" type="search" name="action">></button>
+					<button class="btn-floating blue prev" type="search" name="action"><</button>
+					<button class="btn-floating blue next" type="search" name="action">></button>
 
 				</div>
 				<div id="genre-heading"><h4>Genres</h4></div>
 					<ul>
-						<li class="genre" value="28">Action</li>
-						<li class="genre" value="12">Adventure</li>
-						<li class="genre" value="16">Animation</li>
-						<li class="genre" value="35">Comedy</li>
-						<li class="genre" value="80">Crime</li>
-						<li class="genre" value="99">Documentary</li>
-						<li class="genre" value="18">Drama</li>
-						<li class="genre" value="10751">Family</li>
-						<li class="genre" value="14">Fantasy</li>
-						<li class="genre" value="36">History</li>
-						<li class="genre" value="27">Horror</li>
-						<li class="genre" value="10402">Music</li>
-						<li class="genre" value="9648">Mystery</li>
-						<li class="genre" value="10749">Romance</li>
-						<li class="genre" value="878">Science Fiction</li>
-						<li class="genre" value="10770">TV Movie</li>
-						<li class="genre" value="53">Thriller</li>
-						<li class="genre" value="10752">War</li>
-						<li class="genre" value="37">Western</li>
+						<li class="genre" value="28">Action<li>
+						<li class="genre" value="12">Adventure<li>
+						<li class="genre" value="16">Animation<li>
+						<li class="genre" value="35">Comedy<li>
+						<li class="genre" value="80">Crime<li>
+						<li class="genre" value="99">Documentary<li>
+						<li class="genre" value="18">Drama<li>
+						<li class="genre" value="10751">Family<li>
+						<li class="genre" value="14">Fantasy<li>
+						<li class="genre" value="36">History<li>
+						<li class="genre" value="27">Horror<li>
+						<li class="genre" value="10402">Music<li>
+						<li class="genre" value="9648">Mystery<li>
+						<li class="genre" value="10749">Romance<li>
+						<li class="genre" value="878">Science Fiction<li>
+						<li class="genre" value="10770">TV Movie<li>
+						<li class="genre" value="53">Thriller<li>
+						<li class="genre" value="10752">War<li>
+						<li class="genre" value="37">Western<li>
 					</ul>
 			</div>
 		</div>
 <!-- recently viewed -->
-		<div class="row">
-			<div class="col s9">
-				<h4>Recently Viewed<h4>
+		
+<footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+        	<div class="row"><h4>Recently Viewed<h4>
 				<div id="recently-viewed"></div>
 
 			</div>
-	</div>
+		</div>
+      </div>      
+  </footer>
+
 
 
     <!-- LINK TO FIREBASE GOES HERE -->
