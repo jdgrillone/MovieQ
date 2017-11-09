@@ -96,7 +96,7 @@ $(document).ready(function(){
 	});
 
 	var audioElement = document.createElement("audio");
-    audioElement.setAttribute("src", "Assets/Dial_Up.mp3");
+    audioElement.setAttribute("src", "assets/Dial_Up.mp3");
 
     // displayRecommendations function re-renders the HTML to display the appropriate content
     function displayRecommendations() {
