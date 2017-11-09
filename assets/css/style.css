@@ -7,8 +7,8 @@
 }
 
 .imagesmall {
-	width: 18%;
-	height: 18%;
+	width: 12%;
+	height: 12%;
 	padding: 0px;
 }
 
@@ -46,5 +46,5 @@
 
 .carousel {
 	display: relative;
-	top: -60px;
+	top: -55px;
 }

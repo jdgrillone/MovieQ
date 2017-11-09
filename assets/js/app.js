@@ -80,30 +80,34 @@ $(document).ready(function(){
     $("#prev").on("click", function(event) {
        event.preventDefault();
 
-       if (offset >= 3) {
-         offset -= 3;
-         movieSearch();
-     }
- });
+		if (offset >= 3) {
+			offset -= 3;
+			movieSearch();
+    	}
+	});
 
     $("#next").on("click", function(event) {
     	event.preventDefault();
 
     	if (offset < 15) {
-         offset += 3;
-         movieSearch();
-     }
- });
+        	offset += 3;
+        	movieSearch();
+    	}
+	});
+
+	var audioElement = document.createElement("audio");
+    audioElement.setAttribute("src", "Assets/Dial_Up.mp3");
 
     // displayRecommendations function re-renders the HTML to display the appropriate content
     function displayRecommendations() {
-
+    	audioElement.play();
         $("#instructions").empty();
         $("#section-title").html("<h4>Recommendations</h4>");
 
         var movieID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "/recommendations?api_key=cb3ac66f262794533540ec467d2c75f1&language=en-US&page=1";
 
+    	setTimeout(function() {
         $(".carousel").html("");
         $(".carousel").carousel("destroy");
         // Creating an AJAX call for the specific movie button being clicked
@@ -141,18 +145,19 @@ $(document).ready(function(){
               $(".carousel").carousel();
           }
 		});// End of ajax.done function
-
+    	}, 3000);
 	}; // End of displayRecommendations function
 
     // displayGenraRecommendations function re-renders the HTML to display the appropriate content
     function displayGenreRecommendations() {
-
+    	audioElement.play();
         $("#instructions").empty();
         $("#section-title").html("<h4>Recommendations</h4>");
 
         var genreID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/discover/movie?with_genres=" + genreID + "&page=1&include_video=false&include_adult=false&sort_by=popularity.desc&language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
 
+    	setTimeout(function() {
         $(".carousel").html("");
         $(".carousel").carousel("destroy");
         // Creating an AJAX call for the specific genre being clicked
@@ -190,7 +195,7 @@ $(document).ready(function(){
 		        $(".carousel").carousel();
 		    }
 		});// End of ajax.done function
-
+    	}, 3000);
 	};// End of displayGenreRecommendations fucntion
 
     // displayRecommendationInfo function re-renders the HTML to display the appropriate content
