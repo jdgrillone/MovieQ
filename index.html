@@ -6,28 +6,22 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body class="#f5f5f5 grey lighten-4">
-	<div class="section no-pad-bot" id="index-banner">
-    <div class="container">
-      <br><br>
-      <h1 class="header center orange-text">MovieQ</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">Movie recommendations based on your preferences</h5>
+	<div class="section no-pad-bot responsive-img" id="index-banner"><img class="responsive-img" src="assets/css/titlecropV4.png">
+		<div class="container">
 
-      </div>
-      
-      <br><br>
 
-    </div>
-  </div>
+		</div>
+	</div>
 	<!-- main container-->
 	<div class="container">
 		<div class="row">
-	<!-- display recommendations -->
+			<!-- display recommendations -->
 			<div class="col s9"> 
-				<div id=""><h4>Recommendations</h4></div>
+				<div id="section-title"></div>
 				<div id="message"></div>
+				<div id="instructions"><img class="responsive-img" src="assets/css/instructions.png"></div>
 				<div class="carousel"></div>
-	<!-- display movie info -->
+				<!-- display movie info -->
 				<div id="recommend-full">
 					<div id="recommendation-info">
 						
@@ -37,65 +31,65 @@
 					</div>
 				</div>
 			</div>
-	<!-- user input -->
+			<!-- user input -->
 			<div class="col s3 #eceff1 blue-grey lighten-5">
-				<div id=""><h5>Search Movies</h5>
+				<div id=""><h5>Search By Movie</h5>
 					<input id="movie-input" type="text" class="search">
 					<button id="movie-search" class="btn floating blue" type="search" name="action">Search</button>
 				</div>
 				<div class="results"></div>
-	
+
 				<div id="next-previous-buttons">
 
 					<button id="prev" class="btn-floating blue disabled" type="search" name="action"><</button>
 					<button id="next" class="btn-floating blue disabled" type="search" name="action">></button>
 
 				</div>
-				<div id="genre-heading"><h4>Genres</h4></div>
-					<ul>
-						<li class="genre" value="28">Action</li>
-						<li class="genre" value="12">Adventure</li>
-						<li class="genre" value="16">Animation</li>
-						<li class="genre" value="35">Comedy</li>
-						<li class="genre" value="80">Crime</li>
-						<li class="genre" value="99">Documentary</li>
-						<li class="genre" value="18">Drama</li>
-						<li class="genre" value="10751">Family</li>
-						<li class="genre" value="14">Fantasy</li>
-						<li class="genre" value="36">History</li>
-						<li class="genre" value="27">Horror</li>
-						<li class="genre" value="10402">Music</li>
-						<li class="genre" value="9648">Mystery</li>
-						<li class="genre" value="10749">Romance</li>
-						<li class="genre" value="878">Science Fiction</li>
-						<li class="genre" value="10770">TV Movie</li>
-						<li class="genre" value="53">Thriller</li>
-						<li class="genre" value="10752">War</li>
-						<li class="genre" value="37">Western</li>
-					</ul>
+				<div id="genre-heading"><h5>Search By Genre</h5></div>
+				<ul>
+					<li class="genre" value="28">Action</li>
+					<li class="genre" value="12">Adventure</li>
+					<li class="genre" value="16">Animation</li>
+					<li class="genre" value="35">Comedy</li>
+					<li class="genre" value="80">Crime</li>
+					<li class="genre" value="99">Documentary</li>
+					<li class="genre" value="18">Drama</li>
+					<li class="genre" value="10751">Family</li>
+					<li class="genre" value="14">Fantasy</li>
+					<li class="genre" value="36">History</li>
+					<li class="genre" value="27">Horror</li>
+					<li class="genre" value="10402">Music</li>
+					<li class="genre" value="9648">Mystery</li>
+					<li class="genre" value="10749">Romance</li>
+					<li class="genre" value="878">Science Fiction</li>
+					<li class="genre" value="10770">TV Movie</li>
+					<li class="genre" value="53">Thriller</li>
+					<li class="genre" value="10752">War</li>
+					<li class="genre" value="37">Western</li>
+				</ul>
 			</div>
 		</div>
-<!-- recently viewed -->
-</div>
-<footer class="page-footer orange">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s16">
-        	<div class="row"><h4>Recently Viewed</h4>
-				<div id="recently-viewed"></div>
+		<!-- recently viewed -->
+	</div>
+	<footer class="page-footer">
+		<div class="container">
+			<div class="row footer">
+				<div class="col l6 s16">
+					<div class="row"><h4 id="text-gold">Recently Viewed</h4>
+						<div id="recently-viewed"></div>
 
+					</div>
+				</div>
 			</div>
-		</div>
-      </div>
-      </div>      
-  </footer>
+		</div>      
+	</footer>
 
 	<!-- Link to Moment.js should go here -->
 	<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 	<!-- LINK TO YOUTUBE API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <!-- LINK TO FIREBASE GOES HERE -->
-    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+	<script src="https://www.youtube.com/iframe_api"></script>
+	<!-- LINK TO FIREBASE GOES HERE -->
+	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
 	<!-- jQuery CDN -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<!-- Compiled and minified Materialize JavaScript -->

@@ -24,20 +24,20 @@ $(document).ready(function(){
 		$(".results").html("");
 	        // Creating an AJAX call for the specific movie being searched
 	        $.ajax({
-             url: queryURL,
-             method: "GET"
-         }).done(function(response) {
+               url: queryURL,
+               method: "GET"
+           }).done(function(response) {
 
-          console.log(response);
+              console.log(response);
 
-          if (offset >= 3) {
-            $("#prev").attr("class", "btn-floating blue");
-        }
-        if (offset < 15) {
-            $("#next").attr("class", "btn-floating blue");
-        }
+              if (offset >= 3) {
+                $("#prev").attr("class", "btn-floating blue");
+            }
+            if (offset < 15) {
+                $("#next").attr("class", "btn-floating blue");
+            }
 
-        for (var i = 0; i < 3; i++) {
+            for (var i = 0; i < 3; i++) {
 		            // Creating a div to hold the movie
 		            var movieDiv = $("<div class='movie'>");
 		            movieDiv.attr("value", response.results[i + offset].id);
@@ -78,25 +78,28 @@ $(document).ready(function(){
     });
 
     $("#prev").on("click", function(event) {
-     event.preventDefault();
+       event.preventDefault();
 
-     if (offset >= 3) {
-       offset -= 3;
-       movieSearch();
-   }
-});
+       if (offset >= 3) {
+         offset -= 3;
+         movieSearch();
+     }
+ });
 
     $("#next").on("click", function(event) {
     	event.preventDefault();
 
     	if (offset < 15) {
-           offset += 3;
-           movieSearch();
-       }
-   });
+         offset += 3;
+         movieSearch();
+     }
+ });
 
     // displayRecommendations function re-renders the HTML to display the appropriate content
     function displayRecommendations() {
+
+        $("#instructions").empty();
+        $("#section-title").html("<h4>Recommendations</h4>");
 
         var movieID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/movie/" + movieID + "/recommendations?api_key=cb3ac66f262794533540ec467d2c75f1&language=en-US&page=1";
@@ -111,12 +114,12 @@ $(document).ready(function(){
         	console.log(response);
 
         	if (response.results.length < 1) {
-               nodisplay();
-        	} else {
+             nodisplay();
+         } else {
 
-              $("#message").text("");
+          $("#message").text("");
 
-              for (var i = 0; i < 10; i++) {
+          for (var i = 0; i < 10; i++) {
 		            // Creating a div to hold the movie
 		            var movieDiv = $("<div class='carousel-item recommend'>");
 		            movieDiv.attr("value", response.results[i].id);
@@ -136,13 +139,16 @@ $(document).ready(function(){
               }
 
               $(".carousel").carousel();
-        	}
+          }
 		});// End of ajax.done function
 
 	}; // End of displayRecommendations function
 
     // displayGenraRecommendations function re-renders the HTML to display the appropriate content
     function displayGenreRecommendations() {
+
+        $("#instructions").empty();
+        $("#section-title").html("<h4>Recommendations</h4>");
 
         var genreID = $(this).attr("value");
         var queryURL = "https://api.themoviedb.org/3/discover/movie?with_genres=" + genreID + "&page=1&include_video=false&include_adult=false&sort_by=popularity.desc&language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1";
@@ -157,12 +163,12 @@ $(document).ready(function(){
         	console.log(response);
 
         	if (response.results.length < 1) {
-               nodisplay();
-        	} else {
+             nodisplay();
+         } else {
 
-              $("#message").text("");
+          $("#message").text("");
 
-              for (var i = 0; i < 10; i++) {
+          for (var i = 0; i < 10; i++) {
 		            // Creating a div to hold the movie
 		            var movieDiv = $("<div class='carousel-item recommend'>");
 		            movieDiv.attr("value", response.results[i].id);
@@ -200,7 +206,7 @@ $(document).ready(function(){
         $.ajax({
         	url: queryURL,
         	method: "GET"
-      	}).done(function(response) {
+        }).done(function(response) {
         	console.log(response);
 
             // Creating a div to hold the movie
@@ -221,13 +227,13 @@ $(document).ready(function(){
 
             // Ajax call to grab the MPAA rating
             $.ajax({
-	        	url: "https://api.themoviedb.org/3/movie/"+movieID+"/release_dates?api_key=cb3ac66f262794533540ec467d2c75f1",
-	        	method: "GET"
-	        }).done(function(response) {
-	        	console.log(response);
+              url: "https://api.themoviedb.org/3/movie/"+movieID+"/release_dates?api_key=cb3ac66f262794533540ec467d2c75f1",
+              method: "GET"
+          }).done(function(response) {
+              console.log(response);
 
-				for (var i = 0; i < response.results.length; i++) {
-					if (response.results[i].iso_3166_1 === "US") {
+              for (var i = 0; i < response.results.length; i++) {
+               if (response.results[i].iso_3166_1 === "US") {
 						// Filling the <p> with the rating
 						pTwo.html("<b>Rated:</b> "+response.results[i].release_dates[0].certification);
 						break;
@@ -235,7 +241,7 @@ $(document).ready(function(){
 				}
 			});// End of ajax.done function
 
-			movieDiv.append(pTwo)
+          movieDiv.append(pTwo)
 
             // Storing the release year
             var released = response.release_date;
@@ -256,31 +262,31 @@ $(document).ready(function(){
 
             // Ajax call to grab the cast
             $.ajax({
-	        	url: "https://api.themoviedb.org/3/movie/"+movieID+"/credits?api_key=cb3ac66f262794533540ec467d2c75f1",
-	        	method: "GET"
-	        }).done(function(response) {
-	        	console.log(response);
+              url: "https://api.themoviedb.org/3/movie/"+movieID+"/credits?api_key=cb3ac66f262794533540ec467d2c75f1",
+              method: "GET"
+          }).done(function(response) {
+              console.log(response);
 
-	        	var pFour = $("<p>").html("<b>Cast:</b> ");
+              var pFour = $("<p>").html("<b>Cast:</b> ");
 
-	        	for (var i = 0; i<4; i++) {
-	        		var performerID = response.cast[i].id;
+              for (var i = 0; i<4; i++) {
+                 var performerID = response.cast[i].id;
 
-	        		$.ajax({
-			        	url: "https://api.themoviedb.org/3/person/"+performerID+"?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1",
-			        	method: "GET"
-			        }).done(function(response) {
-			        	console.log(response);
+                 $.ajax({
+                    url: "https://api.themoviedb.org/3/person/"+performerID+"?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1",
+                    method: "GET"
+                }).done(function(response) {
+                    console.log(response);
 
-						pFour.append("<a href='http://www.imdb.com/name/"+response.imdb_id+"/' target='_blank'>"+response.name+"</a>, ");
+                    pFour.append("<a href='http://www.imdb.com/name/"+response.imdb_id+"/' target='_blank'>"+response.name+"</a>, ");
 					});// End of ajax.done function
-	        	}
+            }
 
 			    // Appending the image
 			    movieDiv.append(pFour);
 
 			    // Appending the plot
-            	movieDiv.append(pFive);
+               movieDiv.append(pFive);
 			});// End of ajax.done function
 
             // Retrieving the URL for the image
@@ -318,46 +324,46 @@ $(document).ready(function(){
         });// End of ajax.done function
 
         // Clear old iframe and replace with default div
-      	$("#player-parent").html('<div id="player">');
+        $("#player-parent").html('<div id="player">');
 
       	// Ajax call for the movie trailer
         $.ajax({
           url: "https://api.themoviedb.org/3/movie/"+movieID+"/videos?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1",
           method: "GET"
-      	}).done(function(response) {
-        	console.log(response);
+      }).done(function(response) {
+       console.log(response);
 
-		    var player;
+       var player;
 		    //function onYouTubeIframeAPIReady() {
-		        player = new YT.Player('player', {
-		        	height: '390',
-		        	width: '100%',
-		        	videoId: response.results[0].key,
-		        	events: {
-		            	'onReady': onPlayerReady,
-		            	'onStateChange': onPlayerStateChange
-		        	}
-		        });
+              player = new YT.Player('player', {
+                 height: '390',
+                 width: '100%',
+                 videoId: response.results[0].key,
+                 events: {
+                     'onReady': onPlayerReady,
+                     'onStateChange': onPlayerStateChange
+                 }
+             });
 		    //}
 
 		    // The API will call this function when the video player is ready.
 		    function onPlayerReady(event) {
-		        event.target.playVideo();
-		    }
+              event.target.playVideo();
+          }
 
 		    //    The API calls this function when the player's state changes.
 		    //    The function indicates that when playing a video (state=1),
 		    //    the player should play for six seconds and then stop.
 		    var done = false;
 		    function onPlayerStateChange(event) {
-		        if (event.data === YT.PlayerState.PLAYING && !done) {
-		        	setTimeout(stopVideo, 23750);
-		        	done = true;
-		        }
-		    }
-		    function stopVideo() {
-		        player.stopVideo();
-		    }
+              if (event.data === YT.PlayerState.PLAYING && !done) {
+                 setTimeout(stopVideo, 23750);
+                 done = true;
+             }
+         }
+         function stopVideo() {
+          player.stopVideo();
+      }
 
 		    //$("#player").css("margin", "0 50%");
 	    });// End of trailer ajax call
@@ -384,20 +390,26 @@ function nodisplay() {
 
 // Pulls last 5 items from database and appends them to #recently-viewed
 database.ref("/movies").orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
-
+    //sets variable to specific movie ID
     var movieID = snapshot.val().id;
 
+    // Searches recentmovies array...
     for (i = 0; i < recentmovies.length; i++) {
+        // If movieID exists in array..
         if (recentmovies[i].val().id === movieID) {
+            // Sets indexOf to the index of the copy
             indexOf = i;
             break;
         }
     };
+    // Checks if recentmovies has a value and if that value matches a child in Firebase
     if (recentmovies[indexOf] && movieID === recentmovies[indexOf].val().id) {
+        // Removes copy from Firebase
         recentmovies[indexOf].ref.remove();
+        // Removes copy from the recentmovies array
         recentmovies.splice(indexOf, 1);
     };
-
+    // Adds Firebase object to the beginning of recentmovies array
     recentmovies.unshift(snapshot);
 
     var recentItem = $("<span>");
@@ -412,9 +424,7 @@ database.ref("/movies").orderByChild("dateAdded").limitToLast(5).on("child_added
     recentItem.append(image);
     $("#recently-viewed").prepend(recentItem);
 
-    //set up a listener on snapshot for on remove
-
-
+    // Removes the latest Firebase child from database to limit data to 5
     if (recentmovies.length > 5) {
         for (i = 5; i < recentmovies.length; i++){
             recentmovies[i].ref.remove();
@@ -424,6 +434,7 @@ database.ref("/movies").orderByChild("dateAdded").limitToLast(5).on("child_added
     }
 });
 
+// Listens for child removed from Firebase, then removes that child from the DOM
 database.ref("/movies").on("child_removed", function(snapshot) {
     console.log(snapshot.val());
     $("#" + snapshot.val().id).remove();
