@@ -262,35 +262,35 @@ $(document).ready(function(){
 
             // Ajax call to grab the cast
             $.ajax({
-              url: "https://api.themoviedb.org/3/movie/"+movieID+"/credits?api_key=cb3ac66f262794533540ec467d2c75f1",
-              method: "GET"
-          }).done(function(response) {
-              console.log(response);
+            	url: "https://api.themoviedb.org/3/movie/"+movieID+"/credits?api_key=cb3ac66f262794533540ec467d2c75f1",
+            	method: "GET"
+        	}).done(function(response) {
+            	console.log(response);
 
-              var pFour = $("<p>").html("<b>Cast:</b> ");
+            	var pFour = $("<p>").html("<b>Cast:</b> ");
 
-              for (var i = 0; i<4; i++) {
-                 var performerID = response.cast[i].id;
+            	for (var i = 0; i<4; i++) {
+                	var performerID = response.cast[i].id;
 
-                 $.ajax({
-                    url: "https://api.themoviedb.org/3/person/"+performerID+"?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1",
-                    method: "GET"
-                }).done(function(response) {
-                    console.log(response);
+                	$.ajax({
+                    	url: "https://api.themoviedb.org/3/person/"+performerID+"?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1",
+                    	method: "GET"
+                	}).done(function(response) {
+                    	console.log(response);
 
-                    pFour.append("<a href='http://www.imdb.com/name/"+response.imdb_id+"/' target='_blank'>"+response.name+"</a>, ");
+                    	pFour.append("<a href='http://www.imdb.com/name/"+response.imdb_id+"/' target='_blank'>"+response.name+"</a>, ");
 					});// End of ajax.done function
-            }
+            	}
 
-			    // Appending the image
-			    movieDiv.append(pFour);
+				// Appending the image
+				movieDiv.append(pFour);
 
-			    // Appending the plot
-               movieDiv.append(pFive);
+				// Appending the plot
+				movieDiv.append(pFive);
 			});// End of ajax.done function
 
-            // Retrieving the URL for the image
-            var imgURL = "https://image.tmdb.org/t/p/w185" + response.poster_path;
+			// Retrieving the URL for the image
+			var imgURL = "https://image.tmdb.org/t/p/w185" + response.poster_path;
 
             // Creating an element to hold the image
             var image = $("<img class='col s3'>").attr("src", imgURL);
@@ -330,20 +330,27 @@ $(document).ready(function(){
         $.ajax({
           url: "https://api.themoviedb.org/3/movie/"+movieID+"/videos?language=en-US&api_key=cb3ac66f262794533540ec467d2c75f1",
           method: "GET"
-      }).done(function(response) {
-       console.log(response);
+    	}).done(function(response) {
+    		console.log(response);
+    		var videoKey;
 
-       var player;
+    		if (Math.floor(Math.random() * 16) === 8) {
+    			videoKey = "YQYihHE_h-k";
+    		} else {
+    			videoKey = response.results[0].key;
+    		}
+
+    		var player;
 		    //function onYouTubeIframeAPIReady() {
-              player = new YT.Player('player', {
-                 height: '390',
-                 width: '100%',
-                 videoId: response.results[0].key,
-                 events: {
-                     'onReady': onPlayerReady,
-                     'onStateChange': onPlayerStateChange
-                 }
-             });
+			player = new YT.Player('player', {
+            	height: '390',
+            	width: '100%',
+            	videoId: videoKey,
+            	events: {
+                	'onReady': onPlayerReady,
+                	'onStateChange': onPlayerStateChange
+            	}
+			});
 		    //}
 
 		    // The API will call this function when the video player is ready.

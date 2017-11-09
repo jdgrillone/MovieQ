@@ -39,3 +39,12 @@
 	padding: 0px;
 	margin: 0px;
 }
+
+.genre, .movie :hover {
+	cursor: pointer;
+}
+
+.carousel {
+	display: relative;
+	top: -60px;
+}
