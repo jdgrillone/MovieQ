@@ -337,20 +337,13 @@ $(document).ready(function(){
           method: "GET"
     	}).done(function(response) {
     		console.log(response);
-    		var videoKey;
-
-    		if (Math.floor(Math.random() * 16) === 8) {
-    			videoKey = "YQYihHE_h-k";
-    		} else {
-    			videoKey = response.results[0].key;
-    		}
 
     		var player;
 		    //function onYouTubeIframeAPIReady() {
 			player = new YT.Player('player', {
             	height: '390',
             	width: '100%',
-            	videoId: videoKey,
+            	videoId: response.results[0].key,
             	events: {
                 	'onReady': onPlayerReady,
                 	'onStateChange': onPlayerStateChange
