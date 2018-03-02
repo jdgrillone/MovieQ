@@ -95,12 +95,8 @@ $(document).ready(function(){
     	}
 	});
 
-	var audioElement = document.createElement("audio");
-    audioElement.setAttribute("src", "assets/Dial_Up.mp3");
-
     // displayRecommendations function re-renders the HTML to display the appropriate content
     function displayRecommendations() {
-    	audioElement.play();
         $("#instructions").empty();
         $("#section-title").html("<h4>Recommendations</h4>");
 
@@ -145,12 +141,11 @@ $(document).ready(function(){
               $(".carousel").carousel();
           }
 		});// End of ajax.done function
-    	}, 3000);
+    	}, 1000);
 	}; // End of displayRecommendations function
 
     // displayGenraRecommendations function re-renders the HTML to display the appropriate content
     function displayGenreRecommendations() {
-    	audioElement.play();
         $("#instructions").empty();
         $("#section-title").html("<h4>Recommendations</h4>");
 
@@ -195,7 +190,7 @@ $(document).ready(function(){
 		        $(".carousel").carousel();
 		    }
 		});// End of ajax.done function
-    	}, 3000);
+    	}, 1000);
 	};// End of displayGenreRecommendations fucntion
 
     // displayRecommendationInfo function re-renders the HTML to display the appropriate content
